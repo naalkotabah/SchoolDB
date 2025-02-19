@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "قائمة الطلاب";
+}
+
+<style>
+    body {
+        direction: rtl;
+        background-color: #2c3e50; /* أزرق داكن */
+        color: #ecf0f1;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    .table-container {
+        background: #34495e;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #f1c40f;
+    }
+
+    th {
+        background-color: #f1c40f;
+        color: #2c3e50;
+    }
+
+    td {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+    }
+
+    .details-icon {
+        color: #f1c40f;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+        .details-icon:hover {
+            color: #d4ac0d;
+        }
+</style>
+
+<div class="container">
+    <div class="table-container">
+        <h3 class="text-center mb-4">قائمة الطلاب</h3>
+
+        <div class="mb-3 text-center">
+            <input type="text" id="searchInput" class="form-control w-50 mx-auto" placeholder="ابحث عن الطالب...">
+        </div>
+        <table >
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>الاسم الكامل</th>
+                    <th>الاسم الاب</th>
+                    <th>الاسم الام</th>
+                    <th>العمر</th>
+                
+                    <th>الصف الدراسي</th>
+                
+                    <th>تفاصيل</th>
+                
+                </tr>
+            </thead>
+            <tbody id="studinttable">
+
+                <!-- يمكن إضافة المزيد من الطلاب هنا -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+     
+
+        $.ajax({
+            url: `Studint/GetAll`,
+            type: "GET",
+            contentType: "application/json",
+            success: function (response) {
+                console.log("✅ بيانات المستخدمين المستلمة:", response);
+
+                var userTable = $("#studinttable");
+                userTable.empty(); // تفريغ الجدول قبل الإضافة
+
+                response.forEach(function (user, index) {
+                    var row = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${user.fullName}</td>
+                                <td>${user.nameFather}</td>
+                                <td>${user.nameMother}</td>
+                                <td>${user.age}</td>
+                                <td>${user.class}</td>
+                                <td>
+                                    <a href="Studint/Index?id=${user.id}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                    userTable.append(row);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("❌ خطأ أثناء جلب البيانات:", error);
+            }
+        });
+    });
+
+ 
+</script>
+
+<!-- استدعاء FontAwesome للأيقونات -->
