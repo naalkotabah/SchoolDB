@@ -1,4 +1,5 @@
 ﻿using CREDAJAX.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,14 +16,14 @@ namespace CREDAJAX.Controllers
             _logger = logger;
             _context = context;
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
 
-
+        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -41,7 +42,7 @@ namespace CREDAJAX.Controllers
                 return StatusCode(500, new { Message = "حدث خطأ في الخادم", Error = ex.Message }); // تحسين رسالة الخطأ
             }
         }
-  
+        [Authorize]
         public IActionResult GetById(int id)
         {
             try
@@ -61,7 +62,7 @@ namespace CREDAJAX.Controllers
             }
         }
 
-      
+        [Authorize]
         public IActionResult Savestudint([FromBody] studint student)
         {
             try
@@ -103,7 +104,7 @@ namespace CREDAJAX.Controllers
 
 
 
-      
+        [Authorize]
         public IActionResult Edit([FromBody] studint student)
         {
             try
@@ -148,7 +149,7 @@ namespace CREDAJAX.Controllers
         }
 
         // حذف موظف
-  
+        [Authorize]
         public IActionResult Delete(int id)
         {
             try

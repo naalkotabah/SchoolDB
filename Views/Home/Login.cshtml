@@ -1,0 +1,107 @@
+﻿
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .login-card h2 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            width: 100%;
+        }
+
+        .text-center a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+            .text-center a:hover {
+                text-decoration: underline;
+            }
+    </style>
+
+
+    <div class="login-container">
+        <div class="login-card">
+            <h2>تسجيل الدخول</h2>
+            <form>
+                <!-- اسم المستخدم -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">اسم المستخدم</label>
+                    <input type="text" class="form-control" id="username" placeholder="أدخل اسم المستخدم">
+                </div>
+                <!-- كلمة المرور -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">كلمة المرور</label>
+                    <input type="password" class="form-control" id="password" placeholder="أدخل كلمة المرور">
+                </div>
+                <!-- زر تسجيل الدخول -->
+                <button type="submit" id="send" class="btn btn-primary">تسجيل الدخول</button>
+            </form>
+         
+        </div>
+    </div>
+
+
+
+<script>
+    document.getElementById("send").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        var studentData = {
+            name: document.getElementById("username").value,
+            password: document.getElementById("password").value,
+        };
+
+        $.ajax({
+            url: `/Home/Loginview`,
+            type: "POST",
+            data: JSON.stringify(studentData), // تحويل الكائن إلى JSON
+            contentType: "application/json", // تحديد نوع المحتوى
+            success: function (response) {
+                Swal.fire({
+                    title: "تم تسجيل!",
+                    text: "تمت إضافة الطالب بنجاح",
+                    icon: "success",
+                    confirmButtonText: "موافق"
+                }).then(function () {
+                    // إعادة توجيه المستخدم إلى صفحة أخرى بعد إغلاق الـ Swal
+                    window.location.href = "/Home/Index"; // قم بتغيير URL إلى الصفحة التي تريد التحويل إليها
+                });
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    title: "خطأ!",
+                    text: "حدث خطأ أثناء الإضافة: " + xhr.responseText,
+                    icon: "error",
+                    confirmButtonText: "حسناً"
+                });
+            }
+        });
+    });
+</script>
+
+

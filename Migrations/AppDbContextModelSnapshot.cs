@@ -22,6 +22,79 @@ namespace CREDAJAX.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CREDAJAX.Models.Roles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "User"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("CREDAJAX.Models.User", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            RoleId = 1,
+                            name = "User",
+                            password = "12345"
+                        },
+                        new
+                        {
+                            id = 2,
+                            RoleId = 2,
+                            name = "Admin",
+                            password = "12345"
+                        });
+                });
+
             modelBuilder.Entity("CREDAJAX.Models.studint", b =>
                 {
                     b.Property<int>("Id")
@@ -93,6 +166,22 @@ namespace CREDAJAX.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Studints");
+                });
+
+            modelBuilder.Entity("CREDAJAX.Models.User", b =>
+                {
+                    b.HasOne("CREDAJAX.Models.Roles", "Roles")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("CREDAJAX.Models.Roles", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
