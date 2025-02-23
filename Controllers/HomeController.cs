@@ -33,7 +33,7 @@ namespace CREDAJAX.Controllers
 
 
 
-        public IActionResult Loginview([FromBody] formLogin user)
+        public async Task<IActionResult> Loginview([FromBody] formLogin user)
         {
             if (user == null || string.IsNullOrEmpty(user.name) || string.IsNullOrEmpty(user.password))
             {
@@ -61,14 +61,16 @@ namespace CREDAJAX.Controllers
                 var principal = new ClaimsPrincipal(identity);
 
                 // تعيين المستخدم في الجلسة أو ملفات تعريف الارتباط
-                HttpContext.SignInAsync(principal);
+                await HttpContext.SignInAsync(principal);
             }
 
-            string backupResult = _backupService.CreateBackup();
+            // إنشاء النسخة الاحتياطية وإرسال البريد الإلكتروني
+            //await _backupService.CreateBackupAndSendEmailAsync();
 
             // إعادة التوجيه إلى الصفحة الرئيسية بعد تسجيل الدخول بنجاح
             return RedirectToAction("Index");
         }
+
 
 
         public IActionResult Login()
