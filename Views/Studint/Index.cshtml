@@ -231,7 +231,8 @@
                 console.log("📌 الـ ID الموجود في الرابط هو:", id);
 
                 $.ajax({
-                    url: `/Studint/GetById/${id}`, // استدعاء API لجلب بيانات الطالب
+                    url: `/Studint/GetById?id=${id}`, // استدعاء مع المعامل id بشكل صحيح
+
                     type: "GET",
                     success: function (response) {
                         console.log("✅ البيانات المستلمة:", response);
@@ -344,7 +345,7 @@
 
     document.getElementById("Dletestuding").addEventListener("click", function (e) {
         e.preventDefault();
-  
+
         Swal.fire({
             title: "هل أنت متأكد؟",
             text: "لن تتمكن من استعادة بيانات الطالب بعد الحذف!",
@@ -359,28 +360,33 @@
                 // تنفيذ الحذف بعد التأكيد
                 var studentId = document.getElementById("Idhidin").value;
 
-                $.ajax({
-                    url: `/Studint/Delete/${studentId}`, // تأكد من أن المسار صحيح للحذف
-                    type: "DELETE", // استخدم DELETE بدلاً من POST
-                    success: function (response) {
+                fetch(`/Studint/Delete/${studentId}`, {
+                    method: "DELETE"
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => { throw new Error(text); });
+                        }
+                        return response.json();
+                    })
+                    .then(() => {
                         Swal.fire({
                             title: "تم الحذف!",
-                            text: "تم حذف الطالب بنجاح",
+                            text: "تم حذف بيانات الطالب بنجاح.",
                             icon: "success",
-                            confirmButtonText: "موافق"
+                            confirmButtonText: "حسناً"
                         });
 
-                        clearFormValues()
-                    },
-                    error: function (xhr) {
+                        clearFormValues(); // تأكد من أن هذه الدالة موجودة وتعمل بشكل صحيح
+                    })
+                    .catch(error => {
                         Swal.fire({
                             title: "خطأ!",
-                            text: "حدث خطأ أثناء الحذف: " + xhr.responseText,
+                            text: "حدث خطأ أثناء الحذف: " + error.message,
                             icon: "error",
                             confirmButtonText: "حسناً"
                         });
-                    }
-                });
+                    });
             }
         });
     });

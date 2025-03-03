@@ -76,32 +76,44 @@
             password: document.getElementById("password").value,
         };
 
+        // إظهار مؤشر التحميل قبل إرسال الطلب
+        Swal.fire({
+            title: "جاري التحقق...",
+            text: "يرجى الانتظار أثناء تسجيل الدخول",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         $.ajax({
             url: `/Home/Loginview`,
             type: "POST",
             data: JSON.stringify(studentData), // تحويل الكائن إلى JSON
             contentType: "application/json", // تحديد نوع المحتوى
             success: function (response) {
+                // تحديث الـ Swal بعد نجاح العملية
                 Swal.fire({
-                    title: "تم تسجيل!",
-                    text: "تمت إضافة الطالب بنجاح",
+                    position: "top-end",
                     icon: "success",
-                    confirmButtonText: "موافق"
-                }).then(function () {
-                    // إعادة توجيه المستخدم إلى صفحة أخرى بعد إغلاق الـ Swal
-                    window.location.href = "/Home/Index"; // قم بتغيير URL إلى الصفحة التي تريد التحويل إليها
+                    title: "تم تسجيل الدخول بنجاح",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = "/Home/Index"; // الانتقال للصفحة الرئيسية
                 });
             },
             error: function (xhr) {
                 Swal.fire({
                     title: "خطأ!",
-                    text: "حدث خطأ أثناء الإضافة: " + xhr.responseText,
+                    text: "حدث خطأ أثناء تسجيل الدخول: " + xhr.responseText,
                     icon: "error",
                     confirmButtonText: "حسناً"
                 });
             }
         });
     });
+
 </script>
 
 

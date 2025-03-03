@@ -64,10 +64,10 @@ namespace CREDAJAX.Controllers
                 await HttpContext.SignInAsync(principal);
             }
 
-            // إنشاء النسخة الاحتياطية وإرسال البريد الإلكتروني
+          
             //await _backupService.CreateBackupAndSendEmailAsync();
 
-            // إعادة التوجيه إلى الصفحة الرئيسية بعد تسجيل الدخول بنجاح
+            
             return RedirectToAction("Index");
         }
 

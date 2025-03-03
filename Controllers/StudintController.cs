@@ -29,11 +29,18 @@ namespace CREDAJAX.Controllers
         {
             try
             {
-                var persons = _context.Studints.AsNoTracking().ToList(); // جلب البيانات دون تتبع لتحسين الأداء
-                if (persons == null || !persons.Any())
-                {
-                    return NotFound("لا توجد بيانات متاحة."); // إرجاع رسالة في حالة عدم وجود بيانات
-                }
+                var persons = _context.Studints.AsNoTracking().Select(S => new{
+
+
+                    S.Id,
+                    S.FullName,
+                    S.NameFather,
+                    S.NameMother,
+                    S.Age,
+                    S.Class,
+
+                }); // جلب البيانات دون تتبع لتحسين الأداء
+
 
                 return Ok(persons); // إرجاع البيانات بصيغة JSON
             }
@@ -42,7 +49,9 @@ namespace CREDAJAX.Controllers
                 return StatusCode(500, new { Message = "حدث خطأ في الخادم", Error = ex.Message }); // تحسين رسالة الخطأ
             }
         }
+
         [Authorize]
+        [HttpGet]
         public IActionResult GetById(int id)
         {
             try

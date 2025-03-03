@@ -54,6 +54,8 @@
 
 <div class="container">
     <div class="table-container">
+        <a asp-controller="Studint" asp-action="Index">اضافة طلاب</a>
+
         <h3 class="text-center mb-4">قائمة الطلاب</h3>
 
         <div class="mb-3 text-center">
@@ -89,7 +91,7 @@
      
 
         $.ajax({
-            url: `Studint/GetAll`,
+            url: `/Studint/GetAll`,
             type: "GET",
             contentType: "application/json",
             success: function (response) {
@@ -108,7 +110,7 @@
                                 <td>${user.age}</td>
                                 <td>${user.class}</td>
                                 <td>
-                                    <a href="Studint/Index?id=${user.id}">
+                                    <a href="/Studint/Index?id=${user.id}">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>
