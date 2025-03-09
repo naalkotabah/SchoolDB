@@ -80,23 +80,26 @@ namespace CREDAJAX.Controllers
                     return BadRequest("البيانات غير صحيحة!");
                 var student3 = new studint
                 {
-                    FullName = "نائل",
-                    NameFather = "قتيبة",
-                    NameMother = "شيماء",
-                    Age = 10, // تأكد من أن العمر صحيح
-                    Gender = "ذكر",
-                    Email = "mohanad19971133@gmail.com",
-                    PhoneNumber = "0773 384 2780",
-                    PhoneNumberFather = "345435345",
-                    Address = "يبلسبلسيبلسبل",
-                    Grade = "اول",
-                    Class = "محمول",
-                    SchoolName = "الميكانيكية",
-                    StudentNumber = "324234",
-                    Skills = "يبلبيل",
-                    Hobbies = "يبليب",
-                    HealthStatus = "يبلبل",
-                    Notes = "يبليبلب"
+                    FullName = student.FullName,
+                    NameFather = student.NameFather,
+                    NameMother = student.NameMother,
+                    Age = student.Age, // تأكد من أن العمر صحيح
+                    Gender = student.Gender,
+                    Email = student.Email,
+                    PhoneNumber = student.PhoneNumber,
+                    PhoneNumberFather = student.PhoneNumberFather,
+                    Address = student.Address,
+                    Grade = student.Grade,
+                    Class =   student.Class,
+                    SchoolName = student.SchoolName,
+                    StudentNumber = student.StudentNumber,
+                    Skills = student.Skills,
+                    Hobbies = student.Hobbies,
+                    HealthStatus = student.HealthStatus,
+                    Notes = student.Notes,
+                    Behavior = student.Behavior,
+                    JobStudin = student.JobStudin,
+                    educationallevel = student.educationallevel
                 };
 
                 _context.Studints.Add(student3);
@@ -144,6 +147,7 @@ namespace CREDAJAX.Controllers
                 existingStudent.Behavior = student.Behavior;
                 existingStudent.educationallevel = student.educationallevel;
                 existingStudent.JobStudin = student.JobStudin;
+                existingStudent.HealthStatus = student.HealthStatus;
 
                 existingStudent.Notes = student.Notes;
 

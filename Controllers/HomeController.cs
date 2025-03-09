@@ -78,5 +78,52 @@ namespace CREDAJAX.Controllers
           
             return View();
         }
+        [HttpGet]
+        public IActionResult Search(string searchValue)
+        {
+            try
+            {
+                var query = _context.Studints.AsQueryable();
+
+                if (!string.IsNullOrWhiteSpace(searchValue))
+                {
+                    string searchLower = searchValue.ToLower().Trim();
+
+                    query = query.Where(s =>
+                        (s.FullName != null && s.FullName.ToLower().Contains(searchLower)) || // البحث في الاسم
+                        (s.Address != null && s.Address.ToLower().Contains(searchLower)) ||  // البحث في العنوان
+                        (s.Class != null && s.Class.ToLower().Contains(searchLower))      // البحث في الفصل
+                    );
+                }
+
+                var students = query.AsNoTracking()
+                                    .Select(S => new
+                                    {
+                                        S.Id,
+                                        S.FullName,
+                                        S.NameFather,
+                                        S.NameMother,
+                                        S.Age,
+                                        S.Class,
+                                    })
+                                    .ToList();
+
+                if (students.Count == 0)
+                {
+                    return NotFound(new { Message = "لم يتم العثور على طالب مطابق للبحث" });
+                }
+
+                return Ok(students);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "حدث خطأ في الخادم", Error = ex.Message });
+            }
+        }
+
+
+
+
+
     }
 }

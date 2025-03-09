@@ -54,12 +54,13 @@
 
 <div class="container">
     <div class="table-container">
-        <a asp-controller="Studint" asp-action="Index">اضافة طلاب</a>
+        <a class="btn btn-primary" asp-controller="Studint" asp-action="Index">اضافة طلاب</a>
 
         <h3 class="text-center mb-4">قائمة الطلاب</h3>
 
         <div class="mb-3 text-center">
             <input type="text" id="searchInput" class="form-control w-50 mx-auto" placeholder="ابحث عن الطالب...">
+
         </div>
         <table >
             <thead>
@@ -122,6 +123,50 @@
             error: function (xhr, status, error) {
                 console.error("❌ خطأ أثناء جلب البيانات:", error);
             }
+        });
+
+       
+       
+    });
+
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            var searchValue = $(this).val().trim(); // الحصول على القيمة المدخلة بعد إزالة الفراغات
+
+            $.ajax({
+                url: "/Home/Search",
+                type: "GET",
+                data: { searchValue: searchValue }, // إرسال القيمة كمعامل واحد فقط
+                contentType: "application/json",
+                success: function (response) {
+                    console.log("✅ بيانات المستخدمين المستلمة:", response);
+
+                    var userTable = $("#studinttable");
+                    userTable.empty(); // تفريغ الجدول قبل الإضافة
+
+                    response.forEach(function (user, index) {
+                        var row = `
+                                    <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${user.fullName}</td>
+                                    <td>${user.nameFather}</td>
+                                    <td>${user.nameMother}</td>
+                                    <td>${user.age}</td>
+                                    <td>${user.class}</td>
+                                    <td>
+                                        <a href="/Studint/Index?id=${user.id}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                        `;
+                        userTable.append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("❌ خطأ أثناء جلب البيانات:", error);
+                }
+            });
         });
     });
 

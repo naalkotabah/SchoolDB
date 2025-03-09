@@ -203,9 +203,13 @@
                     text: "تمت إضافة الطالب بنجاح",
                     icon: "success",
                     confirmButtonText: "موافق"
+                }).then(() => {
+                    clearFormValues()
+                    window.location.reload();
+                    window.location.href = "/Home/Index"; // الانتقال للصفحة الرئيسية
                 });
 
-                clearFormValues()
+                
             },
             error: function (xhr) {
                 Swal.fire({
@@ -325,9 +329,13 @@
                     text: "تمت تعديل الطالب بنجاح",
                     icon: "success",
                     confirmButtonText: "موافق"
+                }).then(() => {
+                    clearFormValues()
+                    window.location.reload();
+                    window.location.href = "/Home/Index"; // الانتقال للصفحة الرئيسية
                 });
 
-                clearFormValues()
+              
             }, 
             error: function (xhr) {
                 Swal.fire({
@@ -375,9 +383,13 @@
                             text: "تم حذف بيانات الطالب بنجاح.",
                             icon: "success",
                             confirmButtonText: "حسناً"
+                        }).then(() => {
+                            clearFormValues()
+                            window.location.reload();
+                            window.location.href = "/Home/Index"; // الانتقال للصفحة الرئيسية
                         });
 
-                        clearFormValues(); // تأكد من أن هذه الدالة موجودة وتعمل بشكل صحيح
+                        
                     })
                     .catch(error => {
                         Swal.fire({
